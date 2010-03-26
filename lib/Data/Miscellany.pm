@@ -1,11 +1,12 @@
-package Data::Miscellany;
-
-# Package holding various useful functions.
 use 5.008;
-use warnings;
 use strict;
-our $VERSION = '0.04';
-use base 'Exporter';
+use warnings;
+
+package Data::Miscellany;
+our $VERSION = '1.100850';
+# ABSTRACT: Collection of miscellaneous subroutines
+
+use Exporter qw(import);
 our %EXPORT_TAGS = (
     util => [
         qw/
@@ -156,11 +157,19 @@ sub trim {
     $s;
 }
 1;
+
+
+
 __END__
+=pod
 
 =head1 NAME
 
 Data::Miscellany - Collection of miscellaneous subroutines
+
+=head1 VERSION
+
+version 1.100850
 
 =head1 SYNOPSIS
 
@@ -183,11 +192,9 @@ else. Obviously what's useful differs from person to person, but this
 particular collection should be useful in object-oriented frameworks, such as
 L<Class::Scaffold> and L<Data::Conveyor>.
 
-=head1 SUBROUTINES
+=head1 FUNCTIONS
 
-=over 4
-
-=item C<set_push ARRAY, LIST>
+=head2 set_push(ARRAY, LIST)
 
 Like C<push()>, but only pushes the item(s) onto the list indicated by the
 list or list ref (the first argument) if the list doesn't already contain it.
@@ -198,13 +205,13 @@ Example:
     set_push @foo, 3, 1, 5, 1, 6;
     # @foo is now (1, 2, 3, 4, 5, 6)
 
-=item C<flatten()>
+=head2 flatten()
 
 If the first argument is an array reference, it returns the dereferenced
 array. If the first argument is undefined (or there are no arguments), it
 returns the empty list. Otherwise the argument list is returned as is.
 
-=item C<flex_grep(SCALAR, LIST)>
+=head2 flex_grep(SCALAR, LIST)
 
 Like C<grep()>, but compares the first argument to each flattened (see
 C<flatten()>) version of each element of the list.
@@ -216,7 +223,7 @@ Examples:
     flex_grep('foo', 1..4, 'flurble', [ qw/foo bar baz/ ])    # true
     flex_grep('foo', 1..4, [ [ 'foo' ] ], [ qw/bar baz/ ])    # false
 
-=item C<is_deeply()>
+=head2 is_deeply()
 
 Like L<Test::More>'s C<is_deeply()> except that this version respects
 stringification overloads. If a package overloads stringification, it means
@@ -225,7 +232,7 @@ L<Test::More> break this behaviour, so here is a working version of
 C<is_deeply()>. This subroutine only does the comparison; there are no test
 diagnostics or results recorded or printed anywhere.
 
-=item C<eq_array()>
+=head2 eq_array()
 
 Like L<Test::More>'s C<eq_array()> except that this version respects
 stringification overloads. If a package overloads stringification, it means
@@ -234,7 +241,7 @@ L<Test::More> break this behaviour, so here is a working version of
 C<eq_array()>. This subroutine only does the comparison; there are no test
 diagnostics or results recorded or printed anywhere.
 
-=item C<eq_hash()>
+=head2 eq_hash()
 
 Like L<Test::More>'s C<eq_hash()> except that this version respects
 stringification overloads. If a package overloads stringification, it means
@@ -243,7 +250,7 @@ L<Test::More> break this behaviour, so here is a working version of
 C<eq_hash()>. This subroutine only does the comparison; there are no test
 diagnostics or results recorded or printed anywhere.
 
-=item C<is_defined(SCALAR)>
+=head2 is_defined(SCALAR)
 
 A kind of C<defined()> that is aware of L<Class::Value>, which has its own
 views of what is a defined value and what isn't. The issue arose since
@@ -260,17 +267,17 @@ This subroutine checks whether its argument is a value object and if so, calls
 the value object's C<is_defined()> method. Otherwise, the normal C<defined()>
 is used.
 
-=item C<value_of(SCALAR)>
+=head2 value_of(SCALAR)
 
 Stringifies its argument, but returns undefined values (per C<is_defined()>)
 as C<undef>.
 
-=item C<str_value_of(SCALAR)>
+=head2 str_value_of(SCALAR)
 
 Stringifies its argument, but returns undefined values (per C<is_defined()>)
 as the empty string.
 
-=item C<class_map(SCALAR, HASH)>
+=head2 class_map(SCALAR, HASH)
 
 Takes an object or class name as the first argument (if it's an object, the
 class name used will be the package name the object is blessed into).
@@ -305,39 +312,44 @@ subclasses C<My::Exception::Business>, here are some outcomes:
     class_map('My::Exception::Business::IllegalValue', \%map)     # RC_ERROR
     class_map('My::Exception::Business::ValueNormalzed', \%map)   # RC_OK
 
-=item C<trim(STRING)>
+=head2 trim(STRING)
 
 Trims off whitespace at the beginning and end of the string and returns the
 trimmed string.
 
-=back
+=head1 INSTALLATION
+
+See perlmodinstall for information and options on installing Perl modules.
 
 =head1 BUGS AND LIMITATIONS
 
 No bugs have been reported.
 
 Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.
-
-=head1 INSTALLATION
-
-See perlmodinstall for information and options on installing Perl modules.
+L<http://rt.cpan.org/Public/Dist/Display.html?Name=Data-Miscellany>.
 
 =head1 AVAILABILITY
 
 The latest version of this module is available from the Comprehensive Perl
-Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a CPAN
-site near you. Or see L<http://search.cpan.org/dist/Data-Miscellany/>.
+Archive Network (CPAN). Visit L<http://www.perl.com/CPAN/> to find a CPAN
+site near you, or see
+L<http://search.cpan.org/dist/Data-Miscellany/>.
 
-=head1 AUTHORS
+The development version lives at
+L<http://github.com/hanekomu/Data-Miscellany/>.
+Instead of sending patches, please fork this project using the standard git
+and github infrastructure.
 
-Marcel GrE<uuml>nauer, C<< <marcel@cpan.org> >>
+=head1 AUTHOR
+
+  Marcel Gruenauer <marcel@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2004-2009 by the authors.
+This software is copyright (c) 2004 by Marcel Gruenauer.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
+
